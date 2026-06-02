@@ -1,0 +1,11 @@
+{
+  "name": "rayos-cosmicos-root",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "npm --prefix ./Rayos_Cosmicos/frontend run start",
+    "dev": "npm --prefix ./Rayos_Cosmicos/frontend run dev",
+    "start:frontend": "npm --prefix ./Rayos_Cosmicos/frontend run start",
+    "start:backend": "npm --prefix ./Rayos_Cosmicos/backend run dev || node ./Rayos_Cosmicos/backend/src/server.js"
+  }
+}

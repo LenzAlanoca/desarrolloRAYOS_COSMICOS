@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --port 61913 --proxy-config proxy.conf.json",
+    "serve": "ng serve --port 61913 --proxy-config proxy.conf.json",
+    "dev": "nodemon --watch src/app --watch angular.json --watch tsconfig.json --ext ts,html,css,json --delay 1 --ignore .angular --ignore node_modules --exec \"ng serve --port 61913 --proxy-config proxy.conf.json\"",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -26,6 +28,7 @@
     "@angular-devkit/build-angular": "^17.3.17",
     "@angular/cli": "^17.3.17",
     "@angular/compiler-cli": "^17.3.0",
+    "nodemon": "^3.0.1",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
     "karma": "~6.4.0",

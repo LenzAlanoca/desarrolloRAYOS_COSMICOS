@@ -10,4 +10,16 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'frontend-app';
+  constructor() {
+    // Si la app se está sirviendo en el puerto 4200 (vieja instancia), redirigir al puerto de desarrollo único
+    try {
+      if (typeof window !== 'undefined' && window.location && window.location.port === '4200') {
+        const targetPort = '61913';
+        const url = `${window.location.protocol}//${window.location.hostname}:${targetPort}${window.location.pathname}${window.location.search}`;
+        window.location.replace(url);
+      }
+    } catch (e) {
+      // silencioso
+    }
+  }
 }

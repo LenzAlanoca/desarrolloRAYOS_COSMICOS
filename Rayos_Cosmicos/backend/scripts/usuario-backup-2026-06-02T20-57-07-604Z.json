@@ -1,0 +1,16 @@
+[
+  {
+    "id_usuario": 1,
+    "nombre": "Administrador",
+    "correo": "admin@umsa.bo",
+    "contrasena": "admin123",
+    "rol": "ADMIN"
+  },
+  {
+    "id_usuario": 2,
+    "nombre": "Investigador",
+    "correo": "investigador@umsa.bo",
+    "contrasena": "invest123",
+    "rol": "INVESTIGADOR"
+  }
+]

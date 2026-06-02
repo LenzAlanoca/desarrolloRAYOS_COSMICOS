@@ -24,6 +24,15 @@ try {
   console.error('Error al cargar rutas de logs:', error.message);
 }
 
+// Rutas de auth
+try {
+  const authRoutes = require('./routes/auth');
+  app.use('/api/auth', authRoutes);
+  console.log('Rutas de auth cargadas correctamente');
+} catch (error) {
+  console.error('Error al cargar rutas de auth:', error.message);
+}
+
 // Manejo de errores
 app.use((err, req, res, next) => {
   console.error('Error en middleware:', err.stack);
