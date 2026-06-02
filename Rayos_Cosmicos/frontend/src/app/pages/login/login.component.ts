@@ -29,9 +29,15 @@ export class LoginComponent {
     const { correo, contrasena } = this.form.value;
     console.log('Login: intento con', correo);
     this.auth.login(correo!, contrasena!).subscribe({
-      next: (res) => {
+      next: (res: any) => {
         console.log('Login: éxito', res);
-        this.router.navigate(['/']);
+        // Redirigir según rol si existe. Valores esperados: 'admin' o 'user'
+        const role = res?.role || res?.user?.role || 'user';
+        if (role === 'admin') {
+          this.router.navigate(['/dashboard/admin']);
+        } else {
+          this.router.navigate(['/dashboard/user']);
+        }
       },
       error: (err) => {
         console.error('Login: fallo', err);

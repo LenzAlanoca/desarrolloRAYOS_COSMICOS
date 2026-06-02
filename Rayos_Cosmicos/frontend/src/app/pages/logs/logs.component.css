@@ -1,0 +1,41 @@
+.logs-container { max-width: 1000px; margin: 20px auto; font-family: Arial, sans-serif; }
+.logs-container h2 { margin-bottom: 12px }
+.logs-container section { margin-bottom: 18px; padding: 8px; border: 1px solid #eee; border-radius: 6px }
+
+table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+th, td { padding: 8px 10px; border: 1px solid #ddd; text-align: left; }
+tr.new { background: linear-gradient(90deg, rgba(255,249,230,1), rgba(245,255,240,1)); }
+.logs-container ul { list-style: none; padding-left: 0 }
+.logs-container li { margin: 6px 0 }
+.logs-container button { margin-left: 8px }
+table { width: 100%; border-collapse: collapse; margin-top: 8px }
+th, td { border: 1px solid #ddd; padding: 6px; text-align: left }
+
+.main-grid {
+	display: grid;
+	grid-template-columns: 1fr 360px;
+	gap: 16px;
+}
+
+.sidebar {
+	border-left: 1px solid #ddd;
+	padding-left: 12px;
+}
+
+.live-table { max-height: 60vh; overflow: auto; }
+
+.live-table table { width: 100%; border-collapse: collapse; }
+
+.live-table th, .live-table td { padding: 6px; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
+
+/* Mejoras visuales y responsividad */
+.aggregated h3, .pivot h3, .sample h3 { margin-top: 0 }
+.live-table thead th { position: sticky; top: 0; background: #fafafa; z-index: 2 }
+.logs-container { max-width: 1200px; margin: 16px auto; padding: 8px }
+.device, .files { background: #fff }
+
+@media (max-width: 900px) {
+	.main-grid { grid-template-columns: 1fr; }
+	.sidebar { border-left: none; padding-left: 0; }
+	.live-table thead th, .sample thead th { font-size: 11px }
+}

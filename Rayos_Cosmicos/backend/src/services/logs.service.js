@@ -1,4 +1,5 @@
 const { Client } = require('ssh2');
+const EventEmitter = require('events');
 const fs = require('fs');
 const path = require('path');
 const chokidar = require('chokidar');
@@ -262,3 +263,45 @@ module.exports = {
   readDetectorLog,
   parseDetectorLine,
 };
+
+// Event emitter para notificar nuevos logs encontrados
+const emitter = new EventEmitter();
+let _polling = false;
+
+// Inicia polling periódico para detectar nuevos archivos en el detector y emitir eventos
+const startPollingForNewLogs = async (intervalMs = 8000) => {
+  if (_polling) return;
+  _polling = true;
+  let known = new Set();
+  try {
+    const initial = await listDetectorLogs();
+    initial.forEach(f => known.add(f.nombre));
+  } catch (e) {
+    // ignore initial error
+  }
+
+  setInterval(async () => {
+    try {
+      const files = await listDetectorLogs();
+      for (const f of files) {
+        if (!known.has(f.nombre)) {
+          known.add(f.nombre);
+          emitter.emit('newLog', f);
+        }
+      }
+      // Prune known to prevent unbounded growth: keep most recent 500
+      if (known.size > 500) {
+        const keep = new Set(files.slice(0, 500).map(x => x.nombre));
+        known = keep;
+      }
+    } catch (err) {
+      console.warn('Polling logs error:', err.message);
+    }
+  }, intervalMs);
+};
+
+module.exports.emitter = emitter;
+module.exports.startPollingForNewLogs = startPollingForNewLogs;
+
+// Auto-start polling when service is required
+startPollingForNewLogs();

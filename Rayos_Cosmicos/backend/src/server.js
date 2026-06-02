@@ -15,6 +15,12 @@ app.get('/', (req, res) => {
   res.json({ message: 'API de Rayos Cosmicos - Sistema Web' });
 });
 
+// Redirigir rutas frontend básicas al servidor de desarrollo (ng serve)
+app.get('/logs', (req, res) => {
+  const frontendUrl = process.env.FRONTEND_DEV_URL || 'http://localhost:61913/logs';
+  return res.redirect(frontendUrl);
+});
+
 // Cargar rutas de logs
 try {
   const logsRoutes = require('./routes/logs');

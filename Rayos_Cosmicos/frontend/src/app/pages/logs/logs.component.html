@@ -1,0 +1,146 @@
+<div class="logs-container">
+  <h2>Logs del Detector</h2>
+
+  <div *ngIf="loading">Cargando...</div>
+
+  <div *ngIf="logsData" class="main-grid">
+    <section class="device">
+      <h3>Dispositivo</h3>
+      <div><strong>{{logsData.device.nombre}}</strong> — {{logsData.device.codigo}} ({{logsData.device.modelo}})</div>
+      <div>Estación: {{logsData.device.estacion}}</div>
+    </section>
+
+    <section class="files">
+      <h3>Archivos en BDD</h3>
+      <div *ngIf="logsData.archivosEnBDD?.length === 0">No hay archivos importados.</div>
+      <table *ngIf="logsData.archivosEnBDD?.length">
+        <thead><tr><th>Archivo</th><th>Importado</th><th>Acciones</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let f of logsData.archivosEnBDD">
+            <td>{{f.nombre}}</td>
+            <td>{{f.fecha_importacion}}</td>
+            <td>
+              <button (click)="viewAggregate(f.nombre)">Resumen</button>
+              <button (click)="viewSample(f.nombre)">Muestra</button>
+              <button (click)="viewPivot(f.nombre)">Pivot</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Archivos en Detector (no importados)</h3>
+      <table *ngIf="logsData.archivosEnDetector?.length">
+        <thead><tr><th>Archivo</th><th>Modificado</th><th>Tamaño</th><th>Acciones</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let f of logsData.archivosEnDetector" [class.new]="f.isNew">
+            <td>{{f.nombre}}</td>
+            <td>{{f.modificado | date:'short'}}</td>
+            <td>{{f.tamano_bytes | number}}</td>
+            <td>
+              <button (click)="viewAggregate(f.nombre)">Resumen</button>
+              <button (click)="viewSample(f.nombre)">Muestra</button>
+              <button (click)="viewPivot(f.nombre)">Pivot</button>
+              <button (click)="openLive(f.nombre)">Live</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section *ngIf="pivotRows?.length" class="pivot">
+      <h3>Vista pivotada — variables</h3>
+      <table>
+        <thead><tr><th>Variable</th><th>count</th><th>sum</th><th>avg</th><th>min</th><th>max</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let r of pivotRows">
+            <td>{{r.variable}}</td>
+            <td>{{r.count}}</td>
+            <td>{{r.sum}}</td>
+            <td>{{r.avg | number:'1.2-2'}}</td>
+            <td>{{r.min}}</td>
+            <td>{{r.max}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section *ngIf="liveEvents?.length" class="aggregated">
+      <h3>Vista acumulada (todos los archivos) — eventos (en tiempo real)</h3>
+      <div class="live-table">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Archivo</th>
+              <th *ngFor="let k of getEventKeys(liveEvents[0])">{{k}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of liveEvents; let i = index">
+              <td>{{liveEvents.length - i}}</td>
+              <td>{{e.file}}</td>
+              <td *ngFor="let key of getEventKeys(e)">{{e[key]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section *ngIf="selectedAggregate" class="aggregate">
+      <h3>Resumen acumulado — {{selectedAggregate.archivo}}</h3>
+      <div>Total eventos: {{selectedAggregate.total_eventos}}</div>
+      <table>
+        <thead><tr><th>Variable</th><th>count</th><th>sum</th><th>avg</th><th>min</th><th>max</th></tr></thead>
+        <tbody>
+          <tr *ngFor="let k of getMedidasKV()">
+            <td>{{k.key}}</td>
+            <td>{{ getKVValue(k, 'count') }}</td>
+            <td>{{ getKVValue(k, 'sum') }}</td>
+            <td>{{ getKVValue(k, 'avg') | number:'1.2-2' }}</td>
+            <td>{{ getKVValue(k, 'min') }}</td>
+            <td>{{ getKVValue(k, 'max') }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section *ngIf="sampleEvents?.length" class="sample">
+      <h3>Muestra de eventos</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th *ngFor="let v of getKeys(sampleEvents[0])">{{v}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of sampleEvents">
+            <td>{{e.linea}}</td>
+            <td *ngFor="let key of getKeys(e)">{{e[key]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    
+    <aside class="sidebar" *ngIf="selectedLiveFile">
+      <h3>Live: {{selectedLiveFile}}</h3>
+      <button (click)="closeLive()">Cerrar live</button>
+      <div class="live-table">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th *ngFor="let k of getEventKeys(liveLines[0])">{{k}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let e of liveLines; let i = index">
+              <td>{{liveLines.length - i}}</td>
+              <td *ngFor="let key of getEventKeys(e)">{{e[key]}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </aside>
+  </div>
+</div>
