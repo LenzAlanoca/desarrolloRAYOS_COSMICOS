@@ -14,7 +14,7 @@
   <div class="metrics-grid">
     <div class="metric-card">
       <span class="label">Tasa de Eventos</span>
-      <div class="value">{{ metricasPrincipales.tasaEventos }} <small>ev/s</small></div>
+      <div class="value">{{ metricasPrincipales.tasaEventos }} <small>ev/min</small></div>
     </div>
     <div class="metric-card">
       <span class="label">Eventos Totales</span>
@@ -33,29 +33,13 @@
   <!-- Sección de Gráficas Científicas (Basado en image.png) -->
   <section class="charts-section">
     <div class="filter-info">
-      Figura: Coincidencias vs Presión | Filtro: 2026-04-15 a 2026-04-20
+      Archivo: {{ selectedFile }} | Actualización en tiempo real (cada 10s)
     </div>
 
     <div class="chart-container" *ngFor="let fig of [1,2,3,4,5]">
-      <div class="chart-header">Figura {{ fig }}: {{ getFiguraTitle(fig) }}</div>
-      <div class="chart-area-placeholder">
-        <!-- Aquí irá el canvas de Chart.js o similar -->
-        <div class="y-axis-left">Cuentas / min</div>
-        <div class="chart-canvas-mock">
-          <div class="grid-lines"></div>
-          <div class="line-data" [ngClass]="'line-color-' + fig"></div>
-          <div class="line-pressure"></div> <!-- Línea punteada de presión -->
-        </div>
-        <div class="y-axis-right">Presión</div>
+      <div class="chart-wrapper">
+        <canvas #chartCanvas></canvas>
       </div>
-      <div class="x-axis-label" *ngIf="fig === 5">Tiempo (Fecha y Hora)</div>
-    </div>
-
-    <!-- Leyenda de colores similar a la imagen -->
-    <div class="chart-legend">
-      <div class="legend-item"><span class="color-box b1"></span> Col 0: CH0 & CH1</div>
-      <div class="legend-item"><span class="color-box b2"></span> Col 2: CH1 & CH2</div>
-      <div class="legend-item"><span class="color-box pressure"></span> Presión (hPa)</div>
     </div>
   </section>
 
@@ -63,9 +47,6 @@
   <footer class="panel-footer">
     <div class="info-item">
       <strong>Ubicación:</strong> {{ detectorInfo.estacion }}
-    </div>
-    <div class="info-item">
-      <strong>Última actualización:</strong> {{ fechaActual | date:'HH:mm:ss' }}
     </div>
   </footer>
 </div>
