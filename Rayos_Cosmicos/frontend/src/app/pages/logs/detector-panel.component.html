@@ -1,0 +1,52 @@
+<div class="panel-container">
+  <!-- Encabezado del Panel -->
+  <header class="panel-header">
+    <div class="title-group">
+      <h1>Monitor de Rayos Cósmicos</h1>
+      <p class="subtitle">{{ detectorInfo.nombre }} | ID: {{ detectorInfo.codigo }}</p>
+    </div>
+    <div class="status-badge" [ngClass]="detectorInfo.estado.toLowerCase()">
+      <span class="dot"></span> {{ detectorInfo.estado }}
+    </div>
+  </header>
+
+  <!-- Grid de Métricas Rápidas -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <span class="label">Tasa de Eventos</span>
+      <div class="value">{{ metricasPrincipales.tasaEventos }} <small>ev/min</small></div>
+    </div>
+    <div class="metric-card">
+      <span class="label">Eventos Totales</span>
+      <div class="value">{{ metricasPrincipales.totalEventos | number }}</div>
+    </div>
+    <div class="metric-card">
+      <span class="label">Temp. Ambiente</span>
+      <div class="value">{{ metricasPrincipales.temperatura }} °C</div>
+    </div>
+    <div class="metric-card">
+      <span class="label">Presión Atm.</span>
+      <div class="value">{{ metricasPrincipales.presion }} hPa</div>
+    </div>
+  </div>
+
+  <!-- Sección de Gráficas Científicas (Basado en image.png) -->
+  <section class="charts-section">
+    <div class="filter-info">
+      Archivo: {{ selectedFile }} | Actualización en tiempo real (cada 10s)
+    </div>
+
+    <div class="chart-container" *ngFor="let fig of [1,2,3,4,5]">
+      <div class="chart-wrapper">
+        <canvas #chartCanvas></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pie de página con info de sistema -->
+  <footer class="panel-footer">
+    <div class="info-item">
+      <strong>Ubicación:</strong> {{ detectorInfo.estacion }}
+    </div>
+  </footer>
+</div>

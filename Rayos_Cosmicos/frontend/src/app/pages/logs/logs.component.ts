@@ -9,7 +9,7 @@ import { ApiLogsService } from '../../services/api-logs.service';
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.css']
 })
-export class LogsComponent implements OnInit {
+export class LogsComponent implements OnInit, OnDestroy {
   logsData: any = null;
   loading = false;
   selectedAggregate: any = null;
