@@ -141,7 +141,7 @@ export class DetectorPanelComponent implements OnInit, OnDestroy, AfterViewInit 
 
     this.fechaActual = t;
     const now = t.getTime();
-    const timeWindow = now - (10 * 60 * 1000); // Ventana de 10 minutos para datos más densos
+    const timeWindow = now - (5 * 60 * 1000); // Ventana de 5 minutos para datos más densos
 
     // Mapeo robusto: intenta colX y también nombres de BDD por si acaso
     const getV = (r: any, col: string, alt: string) => {
@@ -165,7 +165,7 @@ export class DetectorPanelComponent implements OnInit, OnDestroy, AfterViewInit 
         }
       });
 
-      // Fijar el rango visible a exactamente los últimos 10 minutos
+      // Fijar el rango visible a exactamente los últimos 5 minutos
       if (chart.options.scales && chart.options.scales['x']) {
         chart.options.scales['x'].min = timeWindow;
         chart.options.scales['x'].max = now;
