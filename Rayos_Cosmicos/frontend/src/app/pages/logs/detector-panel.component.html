@@ -1,0 +1,71 @@
+<div class="panel-container">
+  <!-- Encabezado del Panel -->
+  <header class="panel-header">
+    <div class="title-group">
+      <h1>Monitor de Rayos Cósmicos</h1>
+      <p class="subtitle">{{ detectorInfo.nombre }} | ID: {{ detectorInfo.codigo }}</p>
+    </div>
+    <div class="status-badge" [ngClass]="detectorInfo.estado.toLowerCase()">
+      <span class="dot"></span> {{ detectorInfo.estado }}
+    </div>
+  </header>
+
+  <!-- Grid de Métricas Rápidas -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <span class="label">Tasa de Eventos</span>
+      <div class="value">{{ metricasPrincipales.tasaEventos }} <small>ev/s</small></div>
+    </div>
+    <div class="metric-card">
+      <span class="label">Eventos Totales</span>
+      <div class="value">{{ metricasPrincipales.totalEventos | number }}</div>
+    </div>
+    <div class="metric-card">
+      <span class="label">Temp. Ambiente</span>
+      <div class="value">{{ metricasPrincipales.temperatura }} °C</div>
+    </div>
+    <div class="metric-card">
+      <span class="label">Presión Atm.</span>
+      <div class="value">{{ metricasPrincipales.presion }} hPa</div>
+    </div>
+  </div>
+
+  <!-- Sección de Gráficas Científicas (Basado en image.png) -->
+  <section class="charts-section">
+    <div class="filter-info">
+      Figura: Coincidencias vs Presión | Filtro: 2026-04-15 a 2026-04-20
+    </div>
+
+    <div class="chart-container" *ngFor="let fig of [1,2,3,4,5]">
+      <div class="chart-header">Figura {{ fig }}: {{ getFiguraTitle(fig) }}</div>
+      <div class="chart-area-placeholder">
+        <!-- Aquí irá el canvas de Chart.js o similar -->
+        <div class="y-axis-left">Cuentas / min</div>
+        <div class="chart-canvas-mock">
+          <div class="grid-lines"></div>
+          <div class="line-data" [ngClass]="'line-color-' + fig"></div>
+          <div class="line-pressure"></div> <!-- Línea punteada de presión -->
+        </div>
+        <div class="y-axis-right">Presión</div>
+      </div>
+      <div class="x-axis-label" *ngIf="fig === 5">Tiempo (Fecha y Hora)</div>
+    </div>
+
+    <!-- Leyenda de colores similar a la imagen -->
+    <div class="chart-legend">
+      <div class="legend-item"><span class="color-box b1"></span> Col 0: CH0 & CH1</div>
+      <div class="legend-item"><span class="color-box b2"></span> Col 2: CH1 & CH2</div>
+      <div class="legend-item"><span class="color-box pressure"></span> Presión (hPa)</div>
+    </div>
+  </section>
+
+  <!-- Pie de página con info de sistema -->
+  <footer class="panel-footer">
+    <div class="info-item">
+      <strong>Ubicación:</strong> {{ detectorInfo.estacion }}
+    </div>
+    <div class="info-item">
+      <strong>Última actualización:</strong> {{ fechaActual | date:'HH:mm:ss' }}
+    </div>
+  </footer>
+</div>
